@@ -13,6 +13,7 @@ void setup()
   setupPins();
   setupSerial();
   setupBLE();
+  delay(1000);
 }
 
 void loop()
@@ -59,8 +60,8 @@ void onBLEAvailable()
 
   while (BLE.available())
   {
-    char sData = BLE.read();
-    Serial.print(sData);
+    char cData = BLE.read();
+    Serial.print(cData);
   }
 
   Serial.println(" << BLE");
@@ -72,8 +73,8 @@ void onSerialAvailable()
 
   while (Serial.available())
   {
-    char sData = Serial.read();
-    BLE.print(sData);
+    char cData = Serial.read();
+    BLE.print(cData);
   }
 
   Serial.println(" << SERIAL");
