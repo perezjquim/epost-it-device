@@ -1,10 +1,11 @@
 #include <SoftwareSerial.h>   //Software Serial Port
-#define RxD 0
-#define TxD 1
+#define RxD 10
+#define TxD 11
 #define SERIAL_BAUD 9600
 #define BLE_BAUD 115200
 #define DEBUG_ENABLED  0
-int has_started_loop = false;
+bool has_started_loop = false;
+
 SoftwareSerial BLE(RxD, TxD);
 
 void setup()
@@ -13,7 +14,6 @@ void setup()
   setupPins();
   setupSerial();
   setupBLE();
-  delay(1000);
 }
 
 void loop()
@@ -56,27 +56,48 @@ void setupBLE()
 
 void onBLEAvailable()
 {
-  Serial.println(" >> BLE");
+  char sData = BLE.read();
 
-  while (BLE.available())
+  if (!isEmpty(sData))
   {
-    char cData = BLE.read();
-    Serial.print(cData);
-  }
+    Serial.println(" >> BLE");
 
-  Serial.println(" << BLE");
+    Serial.print(sData);
+
+    while (BLE.available())
+    {
+      sData = BLE.read();
+
+      if(isEmpty(sData)) break;
+            
+      Serial.print(sData);
+    }
+
+    Serial.println(" << BLE");
+  }
 }
 
 void onSerialAvailable()
 {
-  Serial.println(" >> SERIAL");
+  char sData = Serial.read();
 
-  while (Serial.available())
+  if (!isEmpty(sData))
   {
-    char cData = Serial.read();
-    BLE.print(cData);
-  }
+    BLE.print(sData);
 
-  Serial.println(" << SERIAL");
+    while (Serial.available())
+    {
+      char sData = Serial.read();
+
+      if(isEmpty(sData)) break;
+      
+      BLE.print(sData);
+    }
+  }
+}
+
+bool isEmpty(char aData)
+{
+  return aData == '\0' || aData == (char) 0;
 }
 
