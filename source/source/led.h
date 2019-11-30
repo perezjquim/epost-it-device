@@ -1,18 +1,18 @@
 class LEDHandler
 {
   public:
-    void setup(){
+    void setup() {
       setupLED();
     }
-    bool handleLED(String param){
-      //if (param.equals("")
-      return true;
+    void setLED(bool param) {
+      if (param) digitalWrite(LED_PIN, HIGH);
+      else if (!param) digitalWrite(LED_PIN, LOW);
     }
 
   private:
     void setupLED()
     {
-      pinMode(LED_BUILTIN, OUTPUT);
+      pinMode(LED_PIN, OUTPUT);
     }
 };
 
