@@ -21,7 +21,7 @@ class BLEHandler
           str = String(str + sData);
         }
       }
-      if (debug == true) Serial.println("BLE: " + str);
+      if (debug) Serial.println("BLE: " + str);
       return str;
     }
     void sendToBLE(String str)
