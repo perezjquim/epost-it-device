@@ -8,6 +8,9 @@ class LEDHandler
       if (param) digitalWrite(LED_PIN, HIGH);
       else if (!param) digitalWrite(LED_PIN, LOW);
     }
+    bool getLED(){
+      return digitalRead(LED_PIN);
+    }
 
   private:
     void setupLED()

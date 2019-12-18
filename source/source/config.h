@@ -1,6 +1,5 @@
 #include <SoftwareSerial.h>   //Software Serial Port
 
-
 #define RxD 10
 #define TxD 11
 #define SERIAL_BAUD 9600

@@ -4,8 +4,12 @@
 #include "button.h"
 #include "tag.h"
 #include "util.h"
+#include "notifier.h"
 
 bool has_started_loop = false;
+
+
+
 void setup()
 {
   Serial.println("-- SETUP --");
@@ -13,6 +17,7 @@ void setup()
   LEDHandler.setup();
   ButtonHandler.setup();
   TagHandler.setup();
+  notifier.setup();
 
   debug = true;
 }
@@ -31,11 +36,15 @@ void loop()
     onMessageReceived(str);
   }
 
+  if (notifier.hasNotification()) {
+    notifier.handleNotifications();
+  }
+  if (notifier.hasScheduled()) {
+    notifier.handleScheduale();
+  }
 
-
-//  if (ButtonHandler.isPressed()) LEDHandler.setLED(true);
-//  else if (!ButtonHandler.isPressed()) LEDHandler.setLED(false);
-
+  //  if (ButtonHandler.isPressed()) LEDHandler.setLED(true);
+  //  else if (!ButtonHandler.isPressed()) LEDHandler.setLED(false);
 }
 
 void onMessageReceived(String str)
@@ -56,7 +65,15 @@ void onMessageReceived(String str)
 
   if (action.equals("SEARCH"))
   {
+    Serial.println(String("ACTION SEARCH - " + param));
     TagHandler.handleTags(param);
+    return;
+  }
+  else if (action.equals("SCHEDULE"))
+  {
+    Serial.println(String("ACTION SCHEDULE - " + param));
+    unsigned long period = atol(param.c_str());
+    notifier.schedualeNotification(period);
     return;
   }
 }
